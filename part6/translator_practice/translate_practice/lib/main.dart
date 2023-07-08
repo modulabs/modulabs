@@ -1,7 +1,10 @@
 import 'dart:async';
 
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'package:google_mlkit_translation/google_mlkit_translation.dart';
+import 'package:image_picker/image_picker.dart';
 
 void main() {
   runApp(MyApp());
@@ -29,6 +32,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  late final CameraController _cameraController;
   final _controller = TextEditingController();
   TranslateLanguage _sourceLanguage = TranslateLanguage.english;
   TranslateLanguage _targetLanguage = TranslateLanguage.korean;
@@ -37,12 +41,66 @@ class _MyHomePageState extends State<MyHomePage> {
     targetLanguage: _targetLanguage,
   );
   final _translationController = StreamController<String>();
+  bool _cameraIsBusy = false;
+  bool _recognitionIsBusy = false;
+
+  final TextRecognizer _textRecognizer =
+      TextRecognizer(script: TextRecognitionScript.latin);
+  bool _canProcess = true;
+  bool _isBusy = false;
+  String? _text;
+  final ImagePicker _picker = ImagePicker();
 
   @override
   void dispose() {
     _translationController.close();
     _onDeviceTranslator.close();
+    _textRecognizer.close();
     super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _initializeCamera();
+  }
+
+  Future<void> _initializeCamera() async {
+    final cameras = await availableCameras();
+    final firstCamera = cameras.first;
+
+    _cameraController = CameraController(
+      firstCamera,
+      ResolutionPreset.medium,
+    );
+
+    _cameraController.initialize().then((_) {
+      if (!mounted) {
+        return;
+      }
+      setState(() {});
+    });
+  }
+
+  Future<void> captureAndRecognizeText() async {
+    if (_recognitionIsBusy) return;
+    _recognitionIsBusy = true;
+
+    final XFile? image = await _picker.pickImage(source: ImageSource.camera);
+    if (image != null) {
+      _recognizeText(InputImage.fromFilePath(image.path));
+    }
+
+    _recognitionIsBusy = false;
+  }
+
+  Future<void> _recognizeText(InputImage inputImage) async {
+    _recognitionIsBusy = true;
+
+    final recognizedText = await _textRecognizer.processImage(inputImage);
+    _controller.text = recognizedText.text;
+
+    _recognitionIsBusy = false;
   }
 
   @override
@@ -160,14 +218,15 @@ class _MyHomePageState extends State<MyHomePage> {
             child: StreamBuilder<String>(
               stream: _translationController.stream,
               builder: (context, snapshot) {
-                return Container(
-                  padding: const EdgeInsets.only(left: 30),
-                  alignment: Alignment.center,
-                  child: Text(
-                    snapshot.data ?? '',
-                    style: const TextStyle(
-                      fontSize: 30.0,
-                      fontWeight: FontWeight.bold,
+                return Center(
+                  child: Container(
+                    alignment: Alignment.center,
+                    child: Text(
+                      snapshot.data ?? '',
+                      style: const TextStyle(
+                        fontSize: 30.0,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                 );
@@ -176,7 +235,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           InkWell(
             onTap: () {
-              // TODO: Add search icon button functionality
+              captureAndRecognizeText();
             },
             child: Container(
               alignment: Alignment.center,
