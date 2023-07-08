@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:chatgpt_at_home/role.dart';
 import 'package:eventsource/eventsource.dart';
 import 'package:flutter/material.dart';

@@ -4,23 +4,24 @@ import 'package:flutter/material.dart';
 import 'package:google_mlkit_translation/google_mlkit_translation.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-  // This widget is the root of your application.
+  const MyApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       title: 'Flutter Demo',
-      home: const MyHomePage(title: 'Modulabs'),
+      debugShowCheckedModeBanner: false,
+      home: MyHomePage(title: 'Modulabs'),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+  const MyHomePage({Key? key, required this.title}) : super(key: key);
   final String title;
 
   @override
@@ -29,15 +30,17 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final _controller = TextEditingController();
-  final _sourceLanguage = TranslateLanguage.english;
-  final _targetLanguage = TranslateLanguage.korean;
-  late final _onDeviceTranslator = OnDeviceTranslator(
-      sourceLanguage: _sourceLanguage, targetLanguage: _targetLanguage);
-  final _tranlationController = StreamController<String>();
+  TranslateLanguage _sourceLanguage = TranslateLanguage.english;
+  TranslateLanguage _targetLanguage = TranslateLanguage.korean;
+  late OnDeviceTranslator _onDeviceTranslator = OnDeviceTranslator(
+    sourceLanguage: _sourceLanguage,
+    targetLanguage: _targetLanguage,
+  );
+  final _translationController = StreamController<String>();
 
   @override
   void dispose() {
-    _tranlationController.close();
+    _translationController.close();
     _onDeviceTranslator.close();
     super.dispose();
   }
@@ -56,45 +59,143 @@ class _MyHomePageState extends State<MyHomePage> {
         toolbarHeight: 45.0,
         elevation: 0.0,
       ),
-      body: ListView(
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Padding(
             padding: const EdgeInsets.all(20.0),
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              decoration: const BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(color: Colors.grey, width: 1.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 10.0),
+                    child: DropdownButtonFormField<TranslateLanguage>(
+                      value: _sourceLanguage,
+                      onChanged: (value) {
+                        setState(() {
+                          _sourceLanguage = value!;
+                        });
+                      },
+                      items: [
+                        DropdownMenuItem(
+                          value: TranslateLanguage.english,
+                          child: Text('영어'),
+                        ),
+                        DropdownMenuItem(
+                          value: TranslateLanguage.korean,
+                          child: Text('한국어'),
+                        ),
+                        DropdownMenuItem(
+                          value: TranslateLanguage.japanese,
+                          child: Text('일본어'),
+                        ),
+                        DropdownMenuItem(
+                          value: TranslateLanguage.chinese,
+                          child: Text('중국어'),
+                        ),
+                      ],
+                      decoration: const InputDecoration(
+                        labelText: '소스 언어',
+                        border: OutlineInputBorder(),
+                      ),
+                    ),
+                  ),
                 ),
-              ),
-              child: TextField(
-                controller: _controller,
-                decoration: const InputDecoration(
-                  hintText: '번역할 내용을 입력하세요',
-                  border: InputBorder.none,
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 10.0),
+                    child: DropdownButtonFormField<TranslateLanguage>(
+                      value: _targetLanguage,
+                      onChanged: (value) {
+                        setState(() {
+                          _targetLanguage = value!;
+                        });
+                      },
+                      items: [
+                        DropdownMenuItem(
+                          value: TranslateLanguage.english,
+                          child: Text('영어'),
+                        ),
+                        DropdownMenuItem(
+                          value: TranslateLanguage.korean,
+                          child: Text('한국어'),
+                        ),
+                        DropdownMenuItem(
+                          value: TranslateLanguage.japanese,
+                          child: Text('일본어'),
+                        ),
+                        DropdownMenuItem(
+                          value: TranslateLanguage.chinese,
+                          child: Text('중국어'),
+                        ),
+                      ],
+                      decoration: const InputDecoration(
+                        labelText: '타겟 언어',
+                        border: OutlineInputBorder(),
+                      ),
+                    ),
+                  ),
                 ),
-                onSubmitted: (text) async {
-                  final translation =
-                      await _onDeviceTranslator.translateText(text);
-                  _tranlationController.add(translation);
-                },
-              ),
+              ],
             ),
           ),
-          Container(
-            width: MediaQuery.of(context).size.width / 1.3,
-            padding: const EdgeInsets.only(left: 30),
+          const SizedBox(height: 10),
+          Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: TextField(
+              controller: _controller,
+              decoration: const InputDecoration(
+                hintText: '번역할 내용을 입력하세요',
+                border: OutlineInputBorder(),
+              ),
+              onSubmitted: (text) async {
+                final translation =
+                    await _onDeviceTranslator.translateText(text);
+                _translationController.add(translation);
+              },
+            ),
+          ),
+          Expanded(
             child: StreamBuilder<String>(
-              stream: _tranlationController.stream,
+              stream: _translationController.stream,
               builder: (context, snapshot) {
-                return Text(
-                  snapshot.data ?? '',
-                  style: const TextStyle(
-                      fontSize: 30.0, fontWeight: FontWeight.bold),
+                return Container(
+                  padding: const EdgeInsets.only(left: 30),
+                  alignment: Alignment.center,
+                  child: Text(
+                    snapshot.data ?? '',
+                    style: const TextStyle(
+                      fontSize: 30.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 );
               },
             ),
-          )
+          ),
+          InkWell(
+            onTap: () {
+              // TODO: Add search icon button functionality
+            },
+            child: Container(
+              alignment: Alignment.center,
+              height: 75,
+              color: Colors.yellow,
+              child: const Icon(Icons.search),
+            ),
+          ),
+          InkWell(
+            onTap: () {
+              // TODO: Add microphone icon button functionality
+            },
+            child: Container(
+              alignment: Alignment.center,
+              height: 75,
+              color: Colors.orange,
+              child: const Icon(Icons.mic),
+            ),
+          ),
         ],
       ),
     );
