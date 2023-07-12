@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "com.example" "\0"
-            VALUE "FileDescription", "modu_tiktok" "\0"
+            VALUE "FileDescription", "tiktok_practice" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "modu_tiktok" "\0"
+            VALUE "InternalName", "tiktok_practice" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2023 com.example. All rights reserved." "\0"
-            VALUE "OriginalFilename", "modu_tiktok.exe" "\0"
-            VALUE "ProductName", "modu_tiktok" "\0"
+            VALUE "OriginalFilename", "tiktok_practice.exe" "\0"
+            VALUE "ProductName", "tiktok_practice" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

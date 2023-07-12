@@ -1,4 +1,4 @@
-# modu_tiktok
+# tiktok_practice
 
 A new Flutter project.
 

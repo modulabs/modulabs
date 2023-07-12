@@ -2,8 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
-import 'package:modu_tiktok/app/data/service/auth_service.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:tiktok_practice/app/data/service/auth_service.dart';
 
 class RegisterScreen extends StatefulWidget {
   @override

@@ -1,12 +1,11 @@
 import 'dart:io';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:logger/logger.dart';
-import 'package:modu_tiktok/app/view/auth/login.dart';
-import 'package:modu_tiktok/app/view/post/post.dart';
+import 'package:tiktok_practice/app/view/auth/login.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+import '../../view/post/post.dart';
 
 Future<void> signInWithEmail(
     String email, String password, BuildContext context) async {
@@ -26,14 +25,6 @@ Future<void> signInWithEmail(
   } catch (e) {
     print('Error signing in with email: $e');
     // TODO: Show error message to user
-  }
-}
-
-Future<void> signOut() async {
-  try {
-    await FirebaseAuth.instance.signOut();
-  } catch (e) {
-    print('Error signing out: $e');
   }
 }
 
@@ -78,20 +69,14 @@ Future<void> signUpWithEmailAndImage(
 
 Future<String?> uploadProfileImage(String userId, File imageFile) async {
   try {
-    Reference storageRef =
-        FirebaseStorage.instance.ref().child('profile_images/$userId.jpg');
-
+    Reference storageRef = await FirebaseStorage.instance
+        .ref()
+        .child('profile_/images/$userId.jpg');
     UploadTask uploadTask = storageRef.putFile(imageFile);
-
     TaskSnapshot snapshot = await uploadTask;
-
-    String downloadUrl = await snapshot.ref.getDownloadURL();
-
-    return downloadUrl;
-  } catch (e) {
-    print('Error uploading profile image: $e');
-    return null;
-  }
+    String downloardUrl = await snapshot.ref.getDownloadURL();
+    return downloardUrl;
+  } catch (e) {}
 }
 
 Future<String?> getCurrentUserName() async {
@@ -108,20 +93,28 @@ Future<String?> getCurrentUserUuid() async {
   User? user = FirebaseAuth.instance.currentUser;
   if (user != null) {
     await user.reload(); // 사용자 정보 갱신
-    user = FirebaseAuth.instance.currentUser; // 갱신된 사용자 정보 가져오기
+    user = FirebaseAuth.instance.currentUser;
     return user!.uid;
   }
   return null;
 }
 
-Future<String?> getProfileImageUrl(String uuid) async {
+Future<String?> getProfileImageUrl() async {
+  User? user = FirebaseAuth.instance.currentUser;
+  String uid = user!.uid;
   try {
-    DocumentSnapshot snapshot = await FirebaseFirestore.instance
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
         .collection('users')
-        .where('uuid', isEqualTo: uuid)
+        .where('uuid', isEqualTo: uid)
         .limit(1)
-        .get()
-        .then((querySnapshot) => querySnapshot.docs.first);
+        .get();
+
+    if (querySnapshot.docs.isEmpty) {
+      print('No user found with uuid: $uid');
+      return null;
+    }
+
+    DocumentSnapshot snapshot = querySnapshot.docs.first;
 
     if (snapshot.exists) {
       String? imageUrl = snapshot.get("image_url");
@@ -130,6 +123,5 @@ Future<String?> getProfileImageUrl(String uuid) async {
   } catch (e) {
     print('Error getting profile image URL: $e');
   }
-
   return null;
 }

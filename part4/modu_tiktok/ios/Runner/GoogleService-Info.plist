@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>587119900259-m5i13fdln8ettn5ohk7lli159jg8v1uu.apps.googleusercontent.com</string>
+	<string>587119900259-3qkcjig0809venlk0jdm0hc3imvn6oq5.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.587119900259-m5i13fdln8ettn5ohk7lli159jg8v1uu</string>
+	<string>com.googleusercontent.apps.587119900259-3qkcjig0809venlk0jdm0hc3imvn6oq5</string>
 	<key>API_KEY</key>
 	<string>AIzaSyDjj_tjWL9o7kk8hyT7afHJ5NC9cEe94DA</string>
 	<key>GCM_SENDER_ID</key>
@@ -13,7 +13,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.example.moduTiktok</string>
+	<string>com.example.tiktokPractice</string>
 	<key>PROJECT_ID</key>
 	<string>tiktok-12a13</string>
 	<key>STORAGE_BUCKET</key>
@@ -29,6 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:587119900259:ios:23084b78269a9f812b2a56</string>
+	<string>1:587119900259:ios:2627459e0d7aa68e2b2a56</string>
 </dict>
 </plist>

@@ -1,6 +1,6 @@
 {
-    "name": "modu_tiktok",
-    "short_name": "modu_tiktok",
+    "name": "tiktok_practice",
+    "short_name": "tiktok_practice",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

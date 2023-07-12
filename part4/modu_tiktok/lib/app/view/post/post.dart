@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:modu_tiktok/app/data/service/video_controll.dart';
-import 'package:modu_tiktok/app/view/mypage/mypage.dart';
-import 'package:modu_tiktok/app/view/post/scrollPost.dart';
-import 'package:modu_tiktok/app/view/upload/upload.dart';
+import 'package:tiktok_practice/app/data/service/video_controll.dart';
+import 'package:tiktok_practice/app/view/post/scroll_post.dart';
+
+import '../mypage/mypage.dart';
+import '../uploard/upload.dart';
 
 class PostScreen extends StatefulWidget {
   PostScreen({Key? key}) : super(key: key);
@@ -13,7 +14,7 @@ class PostScreen extends StatefulWidget {
 }
 
 class _PostScreenState extends State<PostScreen> {
-  ViedeoControl vdController = ViedeoControl();
+  ViedeoControll vdController = ViedeoControll();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,6 +27,7 @@ class _PostScreenState extends State<PostScreen> {
             onPageChanged: (value) {
               print(value);
               if (value == 1)
+                //TODO 시스템 크롬
                 SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
               else
                 SystemChrome.setSystemUIOverlayStyle(

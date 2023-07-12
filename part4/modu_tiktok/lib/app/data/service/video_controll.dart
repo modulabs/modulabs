@@ -1,23 +1,23 @@
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:logger/logger.dart';
-import 'package:modu_tiktok/app/data/model/video.dart';
-import 'package:modu_tiktok/app/data/service/feed_service.dart';
+import 'package:tiktok_practice/app/data/model/video.dart';
+import 'package:tiktok_practice/app/data/service/post_service.dart';
 import 'package:video_player/video_player.dart';
 
-class ViedeoControl with ChangeNotifier {
+class ViedeoControll with ChangeNotifier {
   VideoPlayerController? controller;
   int videoBefore = 0;
   int currentScreen = 0;
   List<Video> videoList = [];
 
-  ViedeoControl._privateConstructor() {
+  ViedeoControll._privateConstructor() {
     initializeVideoList();
   }
 
-  static final ViedeoControl _instance = ViedeoControl._privateConstructor();
+  static final ViedeoControll _instance = ViedeoControll._privateConstructor();
 
-  factory ViedeoControl() {
+  factory ViedeoControll() {
     return _instance;
   }
 

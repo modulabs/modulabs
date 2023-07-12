@@ -48,7 +48,7 @@ class Video {
 
   Future<void> loadController() async {
     Uri urlLink = Uri.parse(url);
-    controller = VideoPlayerController.network(urlLink.toString());
+    controller = VideoPlayerController.networkUrl(urlLink);
     await controller?.initialize();
     controller?.setLooping(true);
   }

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:modu_tiktok/app/data/service/auth_service.dart';
-
-import 'signup.dart';
+import 'package:tiktok_practice/app/data/service/auth_service.dart';
+import 'package:tiktok_practice/app/view/auth/signup.dart';
 
 class LoginScreen extends StatelessWidget {
   final TextEditingController emailController = TextEditingController();

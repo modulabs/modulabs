@@ -17,7 +17,10 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      return web;
+      throw UnsupportedError(
+        'DefaultFirebaseOptions have not been configured for web - '
+        'you can reconfigure this by running the FlutterFire CLI again.',
+      );
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
@@ -46,18 +49,9 @@ class DefaultFirebaseOptions {
     }
   }
 
-  static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyAROMrWp5sTbmyMSWT9KHoMysPF7m3mNQ8',
-    appId: '1:587119900259:web:2deec8723ebaf8222b2a56',
-    messagingSenderId: '587119900259',
-    projectId: 'tiktok-12a13',
-    authDomain: 'tiktok-12a13.firebaseapp.com',
-    storageBucket: 'tiktok-12a13.appspot.com',
-  );
-
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyAywsMVlxYbzY0sAttDd-9JZskZCUQUM4M',
-    appId: '1:587119900259:android:9922adb252047cb82b2a56',
+    appId: '1:587119900259:android:1a4306d3ab59cede2b2a56',
     messagingSenderId: '587119900259',
     projectId: 'tiktok-12a13',
     storageBucket: 'tiktok-12a13.appspot.com',
@@ -65,11 +59,11 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyDjj_tjWL9o7kk8hyT7afHJ5NC9cEe94DA',
-    appId: '1:587119900259:ios:23084b78269a9f812b2a56',
+    appId: '1:587119900259:ios:2627459e0d7aa68e2b2a56',
     messagingSenderId: '587119900259',
     projectId: 'tiktok-12a13',
     storageBucket: 'tiktok-12a13.appspot.com',
-    iosClientId: '587119900259-m5i13fdln8ettn5ohk7lli159jg8v1uu.apps.googleusercontent.com',
-    iosBundleId: 'com.example.moduTiktok',
+    iosClientId: '587119900259-3qkcjig0809venlk0jdm0hc3imvn6oq5.apps.googleusercontent.com',
+    iosBundleId: 'com.example.tiktokPractice',
   );
 }

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:modu_tiktok/app/data/model/video.dart';
-import 'package:modu_tiktok/app/view/components/actions_toolbar.dart';
-import 'package:modu_tiktok/app/view/components/video_description.dart';
+import 'package:tiktok_practice/app/data/model/video.dart';
 import 'package:video_player/video_player.dart';
+
+import 'widgets/actionsToolBar.dart';
+import 'widgets/videoDescription.dart';
 
 class VideoCard extends StatefulWidget {
   final Video video;
