@@ -37,8 +37,8 @@ class _LoginPageState extends State<LoginPage> {
               ElevatedButton(
                 onPressed: () {
                   setState(() {
-                    loginWithEmailAndPassword(
-                        _auth, _emailController.text, _passwordController.text);
+                    loginWithEmailAndPassword(_auth, _emailController.text,
+                        _passwordController.text, context);
                   });
                 },
                 child: Text('Login'),

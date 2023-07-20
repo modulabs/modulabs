@@ -5,12 +5,13 @@ import 'package:flutter/material.dart';
 // auth 인스턴스에서 UserCredential 리턴
 
 Future<void> loginWithEmailAndPassword(
-    FirebaseAuth auth, String email, String password) async {
+    FirebaseAuth auth, String email, String password, context) async {
   try {
     UserCredential userCredential =
         await auth.signInWithEmailAndPassword(email: email, password: password);
     User? user = userCredential.user;
     print('user login with ${user!.email}');
+    Navigator.pushReplacementNamed(context, '/home');
   } catch (e) {
     print('Login Failed :$e');
   }
