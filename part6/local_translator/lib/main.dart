@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'package:google_mlkit_translation/google_mlkit_translation.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:speech_to_text/speech_to_text.dart' as stt;
 
 void main() {
   runApp(MyApp());
@@ -43,6 +44,7 @@ class _MyHomePageState extends State<MyHomePage> {
   final _translationController = StreamController<String>();
   bool _cameraIsBusy = false;
   bool _recognitionIsBusy = false;
+  late final stt.SpeechToText _speechToText;
 
   final TextRecognizer _textRecognizer =
       TextRecognizer(script: TextRecognitionScript.latin);
@@ -63,6 +65,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     super.initState();
     _initializeCamera();
+    _initializeSpeechToText();
   }
 
   Future<void> _initializeCamera() async {
@@ -103,6 +106,25 @@ class _MyHomePageState extends State<MyHomePage> {
     _recognitionIsBusy = false;
   }
 
+  Future<void> _initializeSpeechToText() async {
+    _speechToText = stt.SpeechToText();
+    await _speechToText.initialize();
+  }
+
+  void startListening() {
+    _speechToText.listen(
+      onResult: (result) {
+        setState(() {
+          _controller.text = result.recognizedWords;
+        });
+      },
+    );
+  }
+
+  void stopListening() {
+    _speechToText.stop();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -133,6 +155,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       onChanged: (value) {
                         setState(() {
                           _sourceLanguage = value!;
+                          print(_sourceLanguage);
                         });
                       },
                       items: [
@@ -168,6 +191,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       onChanged: (value) {
                         setState(() {
                           _targetLanguage = value!;
+                          print(_targetLanguage);
                         });
                       },
                       items: [
@@ -246,7 +270,11 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           InkWell(
             onTap: () {
-              // TODO: Add microphone icon button functionality
+              if (_speechToText.isListening) {
+                stopListening();
+              } else {
+                startListening();
+              }
             },
             child: Container(
               alignment: Alignment.center,
