@@ -41,7 +41,23 @@ class _MyAppState extends State<MyApp> {
         '/add': (context) => AddTodo(),
         '/home': (context) => HomePage(),
       },
-      home: HomePage(),
+      home: StreamBuilder<User?>(
+        stream: auth.authStateChanges(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const CircularProgressIndicator(
+              backgroundColor: Colors.white,
+              color: Colors.black,
+            );
+          } else {
+            if (snapshot.data == null) {
+              return LoginPage();
+            } else {
+              return HomePage();
+            }
+          }
+        },
+      ),
     );
   }
 }
