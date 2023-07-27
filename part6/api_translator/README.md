@@ -4,13 +4,8 @@ A new Flutter project.
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+웹 환경에서 실행할 경우 아래의 명령어를 사용하여 플러터 웹을 실행합니다.
 
-A few resources to get you started if this is your first Flutter project:
+ `flutter run -d chrome --web-browser-flag "--disable-web-security"`
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+이렇게 하는 이유는 Flutter Web에서 API 요청 시 CORS 문제가 발생하기 때문입니다.
